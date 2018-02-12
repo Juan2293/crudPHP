@@ -51,7 +51,7 @@ class Crud extends Conexion {
   }
 
 
-  public static  function consultarUsuariosModel($tabla) 
+  public static  function consultarUsuariosModel($tabla)
   {
     $stmt = Conexion::conectar()->prepare("Select * From $tabla");
     $stmt->execute();
@@ -105,7 +105,3 @@ class Crud extends Conexion {
         $stmt->close();
     }
 }
-
-
-
- ?>

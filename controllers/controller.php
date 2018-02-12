@@ -27,38 +27,38 @@ class Controller{
 		// si no esta vacio el usuario (campo del input)
 		if (isset($_POST["usuarioRegistro"])) {
 
-			
-			#preg_match realiza una comparación con una expresión regular  
+
+			#preg_match realiza una comparación con una expresión regular
 			if(preg_match('/^[a-zA-Z0-9]+$/',$_POST['usuarioRegistro']) &&
-			   preg_match('/^[a-zA-Z0-9]+$/',$_POST['passwordRegistro']) && 
+			   preg_match('/^[a-zA-Z0-9]+$/',$_POST['passwordRegistro']) &&
 			   preg_match('/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/',
 			   $_POST['emailRegistro'])){
 
 				// se encripta con la contraseña con esto
-				$encriptar = crypt($_POST["passwordRegistro"], '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$');	
+				$encriptar = crypt($_POST["passwordRegistro"], '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$');
 
 
 				 // se guarda en array para guardar los datos en la bd
 				$datosController = array(
-					'usuario' => $_POST['usuarioRegistro'], 
+					'usuario' => $_POST['usuarioRegistro'],
 					'password' => $encriptar,
 					'email' => $_POST['emailRegistro']);
-   
-   
+
+
 				// se manda los datos del usuario de registro y la tabla donde se va guardar para ejecutar la funcion
 				$respuesta = Crud::registroUsuarioModel($datosController,"usuarios");
-   
+
 				if($respuesta == "success"){
 					// sirve para redireccionar a la pagina
-					header("location:index.php?action=ok");
+					header("location:ok");
 				}else{
 						header("location:index.php");
-   
+
 				}
 
 			}
 
-			
+
 		}
 
 	}
@@ -67,13 +67,13 @@ class Controller{
 
 		if (isset($_POST["usuarioIngreso"])) {
 
-			
+
 			if(preg_match('/^[a-zA-Z0-9]+$/',$_POST['usuarioIngreso']) &&
 			   preg_match('/^[a-zA-Z0-9]+$/',$_POST['passwordIngreso'])){
 
 			// se encripta la password para que sea igual a la que se guardó encriptada en la base de datos en el registro
 
-			// $encriptar = crypt($_POST["passwordIngreso"], '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$');	
+			// $encriptar = crypt($_POST["passwordIngreso"], '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$');
 			 $datosController = array('usuario' =>  $_POST["usuarioIngreso"] ,
 			 						 'password' => $_POST["passwordIngreso"]);
 
@@ -83,9 +83,9 @@ class Controller{
 				$usuario = $_POST["usuarioIngreso"];
 				$maximoIntentos =2;
 
-				// mientras los intentos sean menores al maximo ... 
+				// mientras los intentos sean menores al maximo ...
 				if($intentos<$maximoIntentos){
-				
+
 				// si el usuario que se ingresó es igual al usuario de bd inicia sesión
 				if($_POST["usuarioIngreso"]==$resultado["usuario"] &&
 				$_POST["passwordIngreso"]==$resultado["password"] ){
@@ -98,24 +98,24 @@ class Controller{
 					$datosController = array("usuarioActual"=>$usuario, "actualizarIntentos" => $intentos);
 					$respuestaActualizarIntentos = Crud::intentosUsuarioModel($datosController,"usuarios");
 
-					 header("location:index.php?action=usuarios");
+					 header("location:usuarios");
 
 				}
 					else {
-						//se suma un intento... cuando el usuario falla el login, se almacena en un array 
+						//se suma un intento... cuando el usuario falla el login, se almacena en un array
 						++$intentos;
 						$datosController = array("usuarioActual"=>$usuario, "actualizarIntentos" => $intentos);
 						$respuestaActualizarIntentos = Crud::intentosUsuarioModel($datosController,"usuarios");
-						header("location:index.php?action=fallo");
+						header("location:fallo");
 
 				  	}
 
 			}else{
-				// los intentos vuelven a 0 
+				// los intentos vuelven a 0
 				$intentos = 0;
 				$datosController = array("usuarioActual"=>$usuario, "actualizarIntentos" => $intentos);
 				$respuestaActualizarIntentos = Crud::intentosUsuarioModel($datosController,"usuarios");
-				header("location:index.php?action=fallo3intentos");
+				header("location:fallo3intentos");
 
 			}
 		}
@@ -136,7 +136,7 @@ class Controller{
 						<td>'.$item["email"].'</td>
 						<td><a href="index.php?action=editar&id='.$item["id"].'"><button>Editar</button></a></td>
 						<td><a href="index.php?action=usuarios&idBorrar='.$item["id"].'"><button>Borrar</button></a></td>';
-		
+
 		}
 
 	}
@@ -163,13 +163,13 @@ class Controller{
 
 			if(isset($_POST["usuarioEditar"])){
 
-				
+
 			if(preg_match('/^[a-zA-Z0-9]+$/',$_POST['usuarioEditar']) &&
-			preg_match('/^[a-zA-Z0-9]+$/',$_POST['passwordEditar']) && 
+			preg_match('/^[a-zA-Z0-9]+$/',$_POST['passwordEditar']) &&
 			preg_match('/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/',
 			$_POST['emailEditar'])){
 
-				$encriptar = crypt($_POST["passwordEditar"], '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$');	
+				$encriptar = crypt($_POST["passwordEditar"], '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$');
 
 				$datos = array('id' => $_POST["idEditar"] ,
 				'usuario' => $_POST["usuarioEditar"],
@@ -181,7 +181,7 @@ class Controller{
 				if($respuesta == "success"){
 
 					// sirve para redireccionar a la pagina
-					header("location:index.php?action=cambio");
+					header("location:cambio");
 				}else{
 
 					 echo "error";
@@ -202,13 +202,11 @@ class Controller{
 					$respuesta = Crud::borrarUsuarioModel($idBorrar,"usuarios");
 
 					if ($respuesta == "success") {
-							header("location:index.php?action=usuarios");
-						
+							header("location:usuarios");
+
 					}else {
 							echo "error";
 					}
 		}
 			}
 }
-
-?>

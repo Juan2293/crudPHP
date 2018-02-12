@@ -1,0 +1,11 @@
+#impedir que se pueda ver el listado de contenido de un directorio
+
+Options All -Indexes
+
+#URLS AMIGABLES
+#Activar RewriteEngine
+RewriteEngine on
+
+#Captura cualquier palabra que venga despues de action, tambien permite a la hora de redireccionar ahorrar el "index.php?action"
+# ejemplo: location:ok
+RewriteRule ^(\w+)$ index.php?action=$1

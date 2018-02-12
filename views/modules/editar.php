@@ -1,7 +1,7 @@
 <?php
 	session_start();
 	if (!$_SESSION["validar"]) {
-		header("location:index.php?action=ingresar");
+		header("location:ingresar");
 		//salirse del script hasta que se vuelva a llamar
 		exit();
 	}
